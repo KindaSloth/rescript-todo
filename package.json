@@ -1,0 +1,21 @@
+{
+  "name": "rescript-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-react": "^7.13.13",
+    "babel-loader": "^8.2.2",
+    "bs-platform": "^9.0.2",
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "@rescript/react": "^0.10.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
