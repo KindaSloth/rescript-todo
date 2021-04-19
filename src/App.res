@@ -1,25 +1,29 @@
+module Render = {
+  let map = (items, fn) =>
+    items->Belt.Array.mapWithIndex((index, item) => fn(item, index->Js.Int.toString))->React.array
+
+  let string = React.string
+}
+
 @react.component
 let make = () => {
+  open Render
+
   let (todo, setTodo) = React.useState(_ => "")
   let (todos, setTodos) = React.useState(_ => [])
 
   let onChange = event => {
-    ReactEvent.Form.preventDefault(event)
     let value = ReactEvent.Form.target(event)["value"]
     setTodo(_ => value)
   }
 
-  let todosList = Belt.Array.map(todos, todo => {
-    <li key={todo}> {React.string(todo)} </li>
-  })
-
-  let onClick = _ => {
-    setTodos(_ => Js.Array2.concat(todos, [todo]))
+  let onSubmit = event => {
+    ReactEvent.Form.preventDefault(event)
+    setTodos(_ => Belt.Array.concat(todos, [todo]))
   }
 
   <div>
-    <input onChange value=todo />
-    <button onClick> {React.string("Submit")} </button>
-    <ul> {React.array(todosList)} </ul>
+    <form onSubmit> <input onChange value=todo /> <button> {string("Submit")} </button> </form>
+    <ul> {todos->map((todo, index) => <li key={index}> {string(todo)} </li>)} </ul>
   </div>
 }

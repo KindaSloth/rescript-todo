@@ -5,6 +5,21 @@ var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
 
+function map(items, fn) {
+  return Belt_Array.mapWithIndex(items, (function (index, item) {
+                return Curry._2(fn, item, index.toString());
+              }));
+}
+
+function string(prim) {
+  return prim;
+}
+
+var Render = {
+  map: map,
+  string: string
+};
+
 function App(Props) {
   var match = React.useState(function () {
         return "";
@@ -17,31 +32,31 @@ function App(Props) {
   var setTodos = match$1[1];
   var todos = match$1[0];
   var onChange = function ($$event) {
-    $$event.preventDefault();
     var value = $$event.target.value;
     return Curry._1(setTodo, (function (param) {
                   return value;
                 }));
   };
-  var todosList = Belt_Array.map(todos, (function (todo) {
-          return React.createElement("li", {
-                      key: todo
-                    }, todo);
-        }));
-  var onClick = function (param) {
+  var onSubmit = function ($$event) {
+    $$event.preventDefault();
     return Curry._1(setTodos, (function (param) {
-                  return todos.concat([todo]);
+                  return Belt_Array.concat(todos, [todo]);
                 }));
   };
-  return React.createElement("div", undefined, React.createElement("input", {
-                  value: todo,
-                  onChange: onChange
-                }), React.createElement("button", {
-                  onClick: onClick
-                }, "Submit"), React.createElement("ul", undefined, todosList));
+  return React.createElement("div", undefined, React.createElement("form", {
+                  onSubmit: onSubmit
+                }, React.createElement("input", {
+                      value: todo,
+                      onChange: onChange
+                    }), React.createElement("button", undefined, "Submit")), React.createElement("ul", undefined, map(todos, (function (todo, index) {
+                        return React.createElement("li", {
+                                    key: index
+                                  }, todo);
+                      }))));
 }
 
 var make = App;
 
+exports.Render = Render;
 exports.make = make;
 /* react Not a pure module */
